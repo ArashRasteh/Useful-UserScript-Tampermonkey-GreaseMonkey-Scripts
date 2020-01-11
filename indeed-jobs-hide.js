@@ -29,6 +29,4 @@
         }
 
     })
-
-    console.log(savedJobs);
 })();
