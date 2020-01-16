@@ -1,39 +1,10 @@
-# Hide Applied, Archived, Interviewing on Indeed Jobs Search
-### Tampermonkey / GreaseMonkey Script
+# Useful UserScript / Tampermonkey / GreaseMonkey Scripts
 
-<p>You can also copy and paste it into the browser console, but it is more tedious, so I recommend using a userscript manager to load the script</p>
+<p>
+    You can also copy and paste it into the browser console, but it is more tedious, so I recommend using a userscript manager to load the script. <br>
+    I personally have been using Tampermonkey: https://www.tampermonkey.net/
+</p>
 
-```javascript
-// ==UserScript==
-// @name         Hide Applied, Archived, Interviewing
-// @namespace    http://tampermonkey.net/
-// @version      1.0
-// @description  Hides the cards for the jobs that have been viewed
-// @author       Arash Rasteh
-// @homepage     https://arashrasteh.com/
-// @match        *.indeed.com/jobs*
-// @grant        none
-// ==/UserScript==
-
-(function() {
-    'use strict';
-
-    const savedJobs = document.querySelectorAll(".myjobs-serp-link");
-
-    savedJobs.forEach((item, index) => {
-
-        //console.log(item.closest(".jobsearch-SerpJobCard"));
-        switch(item.textContent) {
-            case 'Applied':
-            case 'Archived':
-            case 'Interviewing':
-                console.log('Hid a job that was marked as ' + item.textContent);
-                item.closest(".jobsearch-SerpJobCard").style.display = "none";
-                break;
-            default:
-                break;
-        }
-
-    })
-})();
-```
+* indeed-jobs-hide.js - Hide Applied, Archived, Interviewing jobs when looking through indeed jobs.
+* gmail-get-most-sender.js - Will console.log a list of all senders with more than or equal to 'minSenders' on gmail.
+* udemy-show-progress-in-title.js - Will show the progress of the current course in the title of the page and after 'Your progress'
