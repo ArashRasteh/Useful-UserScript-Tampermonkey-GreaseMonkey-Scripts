@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Gmail Get Most Sender
-// @namespace    http://tampermonkey.net/
-// @version      1.0
+// @namespace    http://arashrasteh.com/
+// @version      1.1
 // @description  Will Console.log() an array of any sender that has more than 1 email sent to you on the current screen.
 // @author       Arash Rasteh
 // @match        https://mail.google.com/mail/*
@@ -10,9 +10,9 @@
 
 // It is recommended to change the settings so that it shows 100 emails per page for this script to work best.
 
-console.log('"Gmail Get Most Sender" UserScript running.');
+console.log('"Gmail Get Most Sender" UserScript running. use function getMostSenders(minSenders) to call it.');
 
-const getMostSenders = (minSenders) => {
+getMostSenders = (minSenders) => {
     'use strict';
 
     if (!minSenders) minSenders = 2;
@@ -24,7 +24,9 @@ const getMostSenders = (minSenders) => {
     var i = 0;
 
     for (i = 0; i < senders.length; i++) {
-        array_elements.push(senders[i].innerText)
+        let innerText = senders[i].innerText;
+        innerText = innerText.split(/[\s,.-/(/)]+/)
+        array_elements.push(...innerText)
     }
 
     array_elements.sort();
@@ -49,32 +51,22 @@ const getMostSenders = (minSenders) => {
     for (i = 0; i < keysOfSenderCounter.length; i++) {
 
         if (senderCounter[keysOfSenderCounter[i]] >= minSenders) {
-            arrToPrnt.push(keysOfSenderCounter[i]);
+            arrToPrnt.push([keysOfSenderCounter[i], senderCounter[keysOfSenderCounter[i]]]);
         }
 
     }
 
+    arrToPrnt.sort(function(a, b){return b[1] - a[1]})
+
     for(i=0; i < arrToPrnt.length; i++) {
-        arrToPrnt[i] = arrToPrnt[i].replace('\n', ' ');
+        arrToPrnt[i] = `${arrToPrnt[i][1]} - ${arrToPrnt[i][0].replace('\n', ' ')}`;
     }
 
     console.log(arrToPrnt);
 
     arrToPrnt = arrToPrnt.filter( function( element ) {
-        return element.length < 100 && isNaN(element);
+        return element.length < 50 && isNaN(element);
     });
 
     console.log(arrToPrnt.join('\n'));
-}
-
-(function() {
-    'use strict';
-    getMostSenders();
-})();
-
-window.onhashchange = function() {
-    'use strict';
-    console.clear();
-    console.log('"Gmail Get Most Sender" UserScript running.');
-    getMostSenders();
 }
